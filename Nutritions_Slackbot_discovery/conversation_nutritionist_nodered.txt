@@ -1,0 +1,335 @@
+[
+    {
+        "id": "b27de4be.11dfa",
+        "type": "tab",
+        "label": "Flow 6"
+    },
+    {
+        "id": "4e6d4126.9aa6a",
+        "type": "http in",
+        "z": "b27de4be.11dfa",
+        "name": "Slack Request",
+        "url": "/slack",
+        "method": "post",
+        "swaggerDoc": "",
+        "x": 75,
+        "y": 168,
+        "wires": [
+            [
+                "803f8830.25f97"
+            ]
+        ]
+    },
+    {
+        "id": "a7a2607c.705d68",
+        "type": "watson-conversation-v1",
+        "z": "b27de4be.11dfa",
+        "name": "",
+        "workspaceid": "698b0fe1-7d4f-4a15-9b62-0207dc1099f2",
+        "multiuser": false,
+        "context": true,
+        "x": 75,
+        "y": 397,
+        "wires": [
+            [
+                "d93294d3.811858"
+            ]
+        ]
+    },
+    {
+        "id": "eb61e357.4269b8",
+        "type": "http request",
+        "z": "b27de4be.11dfa",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "url": "https://hooks.slack.com/services/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",
+        "tls": "",
+        "x": 1170.5,
+        "y": 328,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c161708e.e7c32",
+        "type": "function",
+        "z": "b27de4be.11dfa",
+        "name": "pick text from payload",
+        "func": "msg.payload = msg.payload.text;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 532,
+        "y": 80,
+        "wires": [
+            [
+                "a7a2607c.705d68"
+            ]
+        ]
+    },
+    {
+        "id": "803f8830.25f97",
+        "type": "switch",
+        "z": "b27de4be.11dfa",
+        "name": "",
+        "property": "payload.token",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "jAVX7w7uaFgD85Avb6MnDM2Q",
+                "vt": "str"
+            },
+            {
+                "t": "neq",
+                "v": "jAVX7w7uaFgD85Avb6MnDM2Q",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 178,
+        "y": 93,
+        "wires": [
+            [
+                "c161708e.e7c32"
+            ],
+            [
+                "8737456b.1f41c"
+            ]
+        ]
+    },
+    {
+        "id": "8737456b.1f41c",
+        "type": "http response",
+        "z": "b27de4be.11dfa",
+        "name": "",
+        "x": 479.5,
+        "y": 127,
+        "wires": []
+    },
+    {
+        "id": "c4ce7263.6e9e38",
+        "type": "function",
+        "z": "b27de4be.11dfa",
+        "name": "#greetings",
+        "func": "msg.payload =  {\"text\": msg.payload.output.text[0]};\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 529,
+        "y": 581,
+        "wires": [
+            [
+                "eb61e357.4269b8"
+            ]
+        ]
+    },
+    {
+        "id": "d93294d3.811858",
+        "type": "switch",
+        "z": "b27de4be.11dfa",
+        "name": "Intents",
+        "property": "payload.intents[0].intent",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "lowbloodpressure",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "highbloodpressure",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "lowsugar",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "highsugar",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "thankyou",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "greetings",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 6,
+        "x": 223.5,
+        "y": 398,
+        "wires": [
+            [
+                "ea69dc04.73afe"
+            ],
+            [
+                "79343d5f.0550e4"
+            ],
+            [
+                "48c796b5.f10728"
+            ],
+            [
+                "d6585edf.e72ce8"
+            ],
+            [
+                "6e9d51ce.fcb4b"
+            ],
+            [
+                "c4ce7263.6e9e38"
+            ]
+        ]
+    },
+    {
+        "id": "6e9d51ce.fcb4b",
+        "type": "function",
+        "z": "b27de4be.11dfa",
+        "name": "#thankyou",
+        "func": "msg.payload =  {\"text\": msg.payload.output.text[0]};\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 539,
+        "y": 526,
+        "wires": [
+            [
+                "eb61e357.4269b8"
+            ]
+        ]
+    },
+    {
+        "id": "ea69dc04.73afe",
+        "type": "watson-discovery-v1",
+        "z": "b27de4be.11dfa",
+        "name": "Low Blood Pressure Query",
+        "environmentname": "",
+        "environment_id": "ae6cd218-ab2d-42da-9ed1-20e4f8d7d125",
+        "collection_id": "cac45583-2877-4b2e-b047-62d9634d1548",
+        "configurationname": "",
+        "configuration_id": "",
+        "count": "1",
+        "query": "low blood pressure",
+        "filter": "",
+        "aggregation": "",
+        "return": "text",
+        "discovery-method": "query",
+        "x": 535.5,
+        "y": 251,
+        "wires": [
+            [
+                "d13d0703.d36e88"
+            ]
+        ]
+    },
+    {
+        "id": "d13d0703.d36e88",
+        "type": "function",
+        "z": "b27de4be.11dfa",
+        "name": "#queryoutput",
+        "func": "msg.payload=msg.search_results;\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 810,
+        "y": 231,
+        "wires": [
+            [
+                "862f7985.cae9e"
+            ]
+        ]
+    },
+    {
+        "id": "862f7985.cae9e",
+        "type": "function",
+        "z": "b27de4be.11dfa",
+        "name": "#textextraction",
+        "func": "msg.payload = {\"text\":msg.payload.results[0].text}\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1020,
+        "y": 231,
+        "wires": [
+            [
+                "eb61e357.4269b8"
+            ]
+        ]
+    },
+    {
+        "id": "79343d5f.0550e4",
+        "type": "watson-discovery-v1",
+        "z": "b27de4be.11dfa",
+        "name": "High Blood Pressure Query",
+        "environmentname": "",
+        "environment_id": "ae6cd218-ab2d-42da-9ed1-20e4f8d7d125",
+        "collection_id": "cac45583-2877-4b2e-b047-62d9634d1548",
+        "configurationname": "",
+        "configuration_id": "",
+        "count": "1",
+        "query": "high blood pressure",
+        "filter": "",
+        "aggregation": "",
+        "return": "text",
+        "discovery-method": "query",
+        "x": 535,
+        "y": 306,
+        "wires": [
+            [
+                "d13d0703.d36e88"
+            ]
+        ]
+    },
+    {
+        "id": "48c796b5.f10728",
+        "type": "watson-discovery-v1",
+        "z": "b27de4be.11dfa",
+        "name": "Low Blood sugar query",
+        "environmentname": "",
+        "environment_id": "ae6cd218-ab2d-42da-9ed1-20e4f8d7d125",
+        "collection_id": "cac45583-2877-4b2e-b047-62d9634d1548",
+        "configurationname": "",
+        "configuration_id": "",
+        "count": "1",
+        "query": "low blood sugar",
+        "filter": "",
+        "aggregation": "",
+        "return": "text",
+        "discovery-method": "query",
+        "x": 527,
+        "y": 352,
+        "wires": [
+            [
+                "d13d0703.d36e88"
+            ]
+        ]
+    },
+    {
+        "id": "d6585edf.e72ce8",
+        "type": "watson-discovery-v1",
+        "z": "b27de4be.11dfa",
+        "name": "High Blood sugar query",
+        "environmentname": "",
+        "environment_id": "ae6cd218-ab2d-42da-9ed1-20e4f8d7d125",
+        "collection_id": "cac45583-2877-4b2e-b047-62d9634d1548",
+        "configurationname": "",
+        "configuration_id": "",
+        "count": "1",
+        "query": "high blood sugar",
+        "filter": "",
+        "aggregation": "",
+        "return": "text",
+        "discovery-method": "query",
+        "x": 525,
+        "y": 400,
+        "wires": [
+            [
+                "d13d0703.d36e88"
+            ]
+        ]
+    }
+]
