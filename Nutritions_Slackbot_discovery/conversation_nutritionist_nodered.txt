@@ -37,21 +37,6 @@
         ]
     },
     {
-        "id": "eb61e357.4269b8",
-        "type": "http request",
-        "z": "b27de4be.11dfa",
-        "name": "",
-        "method": "POST",
-        "ret": "txt",
-        "url": "https://hooks.slack.com/services/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",
-        "tls": "",
-        "x": 1170.5,
-        "y": 328,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "c161708e.e7c32",
         "type": "function",
         "z": "b27de4be.11dfa",
@@ -113,14 +98,14 @@
         "type": "function",
         "z": "b27de4be.11dfa",
         "name": "#greetings",
-        "func": "msg.payload =  {\"text\": msg.payload.output.text[0]};\nreturn msg;\n\n",
+        "func": "msg.payload =  {\n    \"response_type\": \"in_channel\",\n    \"text\": msg.payload.output.text[0]};\nreturn msg;\n\n",
         "outputs": 1,
         "noerr": 0,
         "x": 529,
         "y": 581,
         "wires": [
             [
-                "eb61e357.4269b8"
+                "f952248d.d44fa"
             ]
         ]
     },
@@ -193,14 +178,14 @@
         "type": "function",
         "z": "b27de4be.11dfa",
         "name": "#thankyou",
-        "func": "msg.payload =  {\"text\": msg.payload.output.text[0]};\nreturn msg;\n\n",
+        "func": "msg.payload =  {\n    \"response_type\": \"in_channel\",\n    \"text\": msg.payload.output.text[0]\n    \n};\nreturn msg;\n\n",
         "outputs": 1,
         "noerr": 0,
         "x": 539,
         "y": 526,
         "wires": [
             [
-                "eb61e357.4269b8"
+                "f952248d.d44fa"
             ]
         ]
     },
@@ -249,14 +234,14 @@
         "type": "function",
         "z": "b27de4be.11dfa",
         "name": "#textextraction",
-        "func": "msg.payload = {\"text\":msg.payload.results[0].text}\nreturn msg;\n\n",
+        "func": "msg.payload = {\n    \"response_type\": \"in_channel\",\n    \"text\":msg.payload.results[0].text\n}\nreturn msg;\n\n",
         "outputs": 1,
         "noerr": 0,
         "x": 1020,
         "y": 231,
         "wires": [
             [
-                "eb61e357.4269b8"
+                "f952248d.d44fa"
             ]
         ]
     },
@@ -331,5 +316,14 @@
                 "d13d0703.d36e88"
             ]
         ]
+    },
+    {
+        "id": "f952248d.d44fa",
+        "type": "http response",
+        "z": "b27de4be.11dfa",
+        "name": "",
+        "x": 1065,
+        "y": 399,
+        "wires": []
     }
 ]
